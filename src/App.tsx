@@ -1,16 +1,30 @@
-import { useState } from 'react';
+import { lazy, Suspense } from 'react';
 import './App.css';
 
+const DelayComp = lazy(() => import('./DelayComp'));
+const DelayComp2 = lazy(() =>
+  import('./DelayComp').then((module) => ({
+    default: module.DelayComp2,
+  }))
+);
+
 function App() {
-  const [count, setCount] = useState(0);
+  console.log('App');
 
   return (
     <div className="card">
-      <button onClick={() => setCount((count) => count + 1)}>
-        count is {count}
-      </button>
+      <Suspense fallback={<Fallback />}>
+        <DelayComp />
+        <DelayComp2 />
+      </Suspense>
     </div>
   );
 }
 
 export default App;
+
+export const Fallback = () => {
+  console.log('Fallback');
+
+  return <div>Loading...</div>;
+};

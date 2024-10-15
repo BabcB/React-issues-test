@@ -1,16 +1,25 @@
 import { useState } from 'react';
-import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0);
+const App = () => {
+  const [modalInstances, setModalInstances] = useState<string[]>([]);
+
+  const handleClick = () => {
+    setTimeout(() => {
+      setModalInstances((prev) => [...prev, 'New Modal']);
+    }, 2000);
+  };
 
   return (
-    <div className="card">
-      <button onClick={() => setCount((count) => count + 1)}>
-        count is {count}
-      </button>
+    <div>
+      <button onClick={handleClick}>Open Modal</button>
+
+      {modalInstances.map((modal, index) => (
+        <div key={index} className="modal">
+          {modal} {index + 1}
+        </div>
+      ))}
     </div>
   );
-}
+};
 
 export default App;

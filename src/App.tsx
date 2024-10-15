@@ -1,25 +1,32 @@
-import { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
+import { Home, PageOne, PageTwo, PageThree } from './Components';
+import { Suspense } from 'react';
 
-const App = () => {
-  const [modalInstances, setModalInstances] = useState<string[]>([]);
-
-  const handleClick = () => {
-    setTimeout(() => {
-      setModalInstances((prev) => [...prev, 'New Modal']);
-    }, 2000);
-  };
-
+function App() {
+  console.log('App');
   return (
-    <div>
-      <button onClick={handleClick}>Open Modal</button>
-
-      {modalInstances.map((modal, index) => (
-        <div key={index} className="modal">
-          {modal} {index + 1}
-        </div>
-      ))}
-    </div>
+    <Router basename="/">
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/home" />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/page-one" element={<PageOne />} />
+          <Route path="/page-two" element={<PageTwo />} />
+          <Route path="/page-three" element={<PageThree />} />
+        </Routes>
+      </Suspense>
+    </Router>
   );
-};
+}
 
 export default App;
+
+const Loading = () => {
+  console.log('Loading');
+  return <div>Loading...</div>;
+};
